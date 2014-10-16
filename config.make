@@ -76,7 +76,9 @@ OF_ROOT = ../../packages/openFrameworks
 # add a runtime path to search for those shared libraries, since they aren't 
 # incorporated directly into the final executable application binary.
 ################################################################################
-# PROJECT_LDFLAGS=-Wl,-rpath=./libs
+#PROJECT_LDFLAGS=-Wl,-rpath=./libs
+USER_LIBS = -lLeap
+USER_LDFLAGS = -L./libs
 
 ################################################################################
 # PROJECT DEFINES
@@ -104,7 +106,7 @@ OF_ROOT = ../../packages/openFrameworks
 #
 #   Note: Leave a leading space when adding list items with the += operator
 ################################################################################
-# PROJECT_CFLAGS = 
+PROJECT_CFLAGS = -I../../packages/LeapDeveloperKit_2.1.5+22699_linux/LeapSDK/include
 
 ################################################################################
 # PROJECT OPTIMIZATION CFLAGS

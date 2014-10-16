@@ -140,7 +140,7 @@ namespace wezside
 				if (life[0] > life[1]) reset();
 				if (loc[0] < -ofGetWidth() * 0.5) reset();
 
-				bool varforce = acc.x != 0 && acc.y != 0 && acc.z != 0;
+				// Set particle age
 				life[0] += 0.1;
 
 				// Add constant forces

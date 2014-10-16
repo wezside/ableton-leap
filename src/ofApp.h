@@ -8,6 +8,7 @@
 #include "repeller.hpp"
 #include "attractor.hpp"
 #include "particlesystem.hpp"
+#include "leaplistener.hpp"
 
 class ofApp : public ofBaseApp
 {
@@ -32,15 +33,11 @@ class ofApp : public ofBaseApp
 		ofShader shader;
 		ofCamera camera;
 		wezside::ParticleSystem ps;
-		wezside::Force* stream;
 		wezside::Force* gravity;
 		wezside::Repeller* repeller;
-		wezside::Attractor* attractor;
-		wezside::Attractor* attractor2;
-		wezside::Attractor* attractor3;
-		wezside::Attractor* attractor4;
-		wezside::Attractor* attractor5;
 
-		bool mouse_pressed;
-		bool repell_keydown;
+		LeapListener listener;
+		Controller controller;
+
+		bool debug;
 };
