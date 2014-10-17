@@ -1,7 +1,7 @@
 #pragma once
 
 #define APP_SCALE 0.2
-#define PARTICLES_NUM 100000
+#define PARTICLES_NUM 80000
 
 #include "ofMain.h"
 #include "ofShader.h"
@@ -36,8 +36,11 @@ class ofApp : public ofBaseApp
 		wezside::Force* gravity;
 		wezside::Repeller* repeller;
 
+		std::vector<wezside::Repeller*> repellers;
 		LeapListener listener;
 		Controller controller;
+
+		float cx, cy, cw, ch;
 
 		bool debug;
 };

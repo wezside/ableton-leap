@@ -29,6 +29,7 @@ namespace wezside
 		void update(ofVec3f loc, float mass)
 		{
 			// ofVec3f dir = ofVec3f(x, y, z) - loc;
+			// ofLog(OF_LOG_NOTICE, "%f, %f, %f", target.x - cx, target.y - cy, target.z);
 			ofVec3f dir = ofVec3f(target.x - cx, target.y - cy, z) - loc;
 			float d = dir.length();
 			d = ofClamp(d, 1.0f, 5000.0f);

@@ -3,9 +3,14 @@
 void ofApp::exit()
 {
 	delete gravity;
-	delete repeller;	
+	delete repeller;
 	ps.destroy();
-    controller.removeListener(listener);
+	controller.removeListener(listener);
+
+	for (std::vector<wezside::Repeller*>::iterator it = repellers.begin(); it != repellers.end(); ++it)
+	{
+		delete *it;
+	}
 }
 void ofApp::setup()
 {
@@ -19,6 +24,10 @@ void ofApp::setup()
 
 	// Set up forces
 	gravity = new wezside::Force(0.0f, 0.0001f, 0.0f);
+	for (int i = 0; i < 5; ++i)
+	{
+	   repellers.push_back(new wezside::Repeller(0.0, 0.0, -500.0f));
+	}
 	repeller = new wezside::Repeller(0.0, 0.0, -500.0f);
 
 	// Create particle and any constant forces
@@ -32,14 +41,42 @@ void ofApp::setup()
 	shader.load(ofToDataPath("particle.vert"), ofToDataPath("particle.frag"));
 	camera.setFov(60);
 
-    controller.addListener(listener);
+	cx = ofGetWindowWidth() * 0.5;
+	cy = ofGetWindowHeight() * 0.5;
+	cw = ofGetWidth();
+	ch = ofGetHeight();
+	controller.addListener(listener);
 }
 void ofApp::update()
 {
 	ps.applyForce(gravity);
-	repeller->forcemass = 10000.0f;
-    repeller->forcemass_limit = 10000.0f;
-	ps.applyForce(repeller);
+	for (int i = 0; i < 5; ++i)
+	{
+		float xpos = ofMap(listener.fingers_pos[i].x, -300.0f, 300.0f, 0.0f, ofGetWidth(), true);
+		float ypos = ofMap(listener.fingers_pos[i].y, 500.0f, 0.0f, 0.0f, ofGetHeight(), true);
+		float zpos = ofMap(listener.fingers_pos[i].z, -300.0f, 300.0f, -450.0f, -550.0f, true);
+
+		float velx = ofMap(listener.fingers_vel[i].x, -300.0f, 300.0f, 0.0f, ofGetWidth(), true);
+		float vely = ofMap(listener.fingers_vel[i].y, 500.0f, 0.0f, 0.0f, ofGetHeight(), true);
+		float velz = ofMap(listener.fingers_vel[i].z, -300.0f, 300.0f, -450.0f, -550.0f, true);
+
+		ofVec3f vel = ofVec3f(listener.fingers_vel[i].x, listener.fingers_vel[i].y, listener.fingers_vel[i].z);
+		// ofLog(OF_LOG_NOTICE, "%f, %f, %f", vel.x, vel.y, vel.z);
+
+		ofVec3f tmp = ofVec3f(xpos, ypos, zpos);
+		repellers[i]->setTarget(tmp);
+		repellers[i]->forcemass = 10.0f * vely;
+		repellers[i]->forcemass_limit = repellers[i]->forcemass;
+		ps.applyForce(repellers[i]);
+	}
+	/*repellers[0]->forcemass = 10000.0f;
+	repellers[0]->forcemass_limit = 10000.0f;
+	ps.applyForce(repellers[0]);*/
+
+	// repeller->forcemass = 10000.0f;
+	// repeller->forcemass_limit = 10000.0f;
+	// ps.applyForce(repeller);
+
 	ps.update();
 }
 void ofApp::draw()
@@ -58,10 +95,10 @@ void ofApp::draw()
 				shader.setUniformMatrix4f("modelViewProjectionMatrix", camera.getModelViewProjectionMatrix());
 				ps.draw();
 				shader.end();
-                if (debug)
-                {
-                    // Draw some debug info
-                }
+				if (debug)
+				{
+					// Draw some debug info
+				}
 			camera.end();
 		ofDisableBlendMode();
 	fbo.end();
@@ -73,12 +110,12 @@ void ofApp::keyReleased(int key)
 {
 	switch (key)
 	{
-        case 'd': debug = !debug; break;
+		case 'd': debug = !debug; break;
 	}
 }
 void ofApp::mouseMoved(int x, int y )
 {
-	ps.setMouseXY(x, y);
+	// ps.setMouseXY(x, y);
 }
 void ofApp::mouseDragged(int x, int y, int button){}	
 void ofApp::mousePressed(int x, int y, int button){}

@@ -16,5 +16,7 @@ class LeapListener : public Listener
 		virtual void onFocusGained(const Controller&);
 		virtual void onFocusLost(const Controller&);
 
-		ofVec3f hand_pos;
+		FingerList fingers;
+		ofVec3f fingers_pos[5];
+		ofVec3f fingers_vel[5];
 };

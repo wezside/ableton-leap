@@ -14,7 +14,7 @@ void LeapListener::onConnect(const Controller& controller)
 }
 void LeapListener::onDisconnect(const Controller& controller) 
 {
-	//Note: not dispatched when running in a debugger.
+	// Note: not dispatched when running in a debugger.
 	std::cout << "Disconnected" << std::endl;
 }
 void LeapListener::onExit(const Controller& controller) 
@@ -24,25 +24,52 @@ void LeapListener::onExit(const Controller& controller)
 void LeapListener::onFrame(const Controller& controller) 
 {
 	const Frame frame = controller.frame();
-	if (!frame.hands().empty()) 
+	if (frame.fingers().count() > 0) 
 	{
-		// Get the first hand
-		const Hand hand = frame.hands()[0];
-
-		// Check if the hand has any fingers
-		const FingerList fingers = hand.fingers();
-		if (!fingers.empty()) 
+		fingers = frame.fingers();
+		int finger_count = frame.fingers().count();
+		for (int f = 0; f < finger_count; f++) 
 		{
-			// Calculate the hand's average finger tip position
-			Vector avgPos;
-			for (int i = 0; i < fingers.count(); ++i) 
+			Finger finger = frame.fingers()[f];
+			if (finger.isValid())
 			{
-				avgPos += fingers[i].tipPosition();
+				float x = finger.tipPosition().x;
+				float y = finger.tipPosition().y;
+				float z = finger.tipPosition().z;
+
+				float velx = finger.tipVelocity().x;
+				float vely = finger.tipVelocity().y;
+				float velz = finger.tipVelocity().z;
+				switch(finger.type())
+				{
+					case Finger::TYPE_THUMB: 
+						fingers_pos[0] = ofVec3f(x, y, z);
+						fingers_vel[0] = ofVec3f(velx, vely, velz);
+						// printf("%s\n", "TYPE_THUMB"); 
+						break;
+					case Finger::TYPE_INDEX: 
+						fingers_pos[1] = ofVec3f(x, y, z);
+						fingers_vel[1] = ofVec3f(velx, vely, velz);
+						// printf("%s\n", "TYPE_INDEX"); 
+						break;
+					case Finger::TYPE_MIDDLE: 
+						fingers_pos[2] = ofVec3f(x, y, z);
+						fingers_vel[2] = ofVec3f(velx, vely, velz);
+						// printf("%s\n", "TYPE_MIDDLE"); 
+						break;
+					case Finger::TYPE_RING: 
+						fingers_pos[3] = ofVec3f(x, y, z);
+						fingers_vel[3] = ofVec3f(velx, vely, velz);
+						// printf("%s\n", "TYPE_RING"); 
+						break;
+					case Finger::TYPE_PINKY: 
+						fingers_pos[4] = ofVec3f(x, y, z);
+						fingers_vel[4] = ofVec3f(velx, vely, velz);
+						// printf("%s\n", "TYPE_PINKY"); 
+						break;
+				}				
 			}
-			avgPos /= (float)fingers.count();
-			std::cout << "Hand has " << fingers.count()
-					  << " fingers, average finger tip position" << avgPos << std::endl;
-		}
+    	}
 	}
 }
 

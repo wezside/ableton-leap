@@ -46,10 +46,10 @@ namespace wezside
 
 			// Location random boundaries
 			ofSeedRandom();
-			m_fspawn_xmin = -200.0f;
+			m_fspawn_xmin = -250.0f;
 			m_fspawn_ymin = -ofGetHeight() * 0.5f;
 			m_fspawn_zmin = -500.0;
-			m_fspawn_xmax = 200.0f;
+			m_fspawn_xmax = 250.0f;
 			m_fspawn_ymax = -ofGetHeight() * 0.5f - ofGetHeight();
 			m_fspawn_zmax = -500.0;
 
@@ -61,7 +61,7 @@ namespace wezside
 
 			// Max delay and life span
 			m_nMaxDelay = 50.0; 
-			m_nMaxLife = 100.0;
+			m_nMaxLife = 80.0;
 
 			// Alpha start + end value
 			m_fAmin = 0.0;
@@ -120,7 +120,7 @@ namespace wezside
 		}
 		void applyForce(Force* f)
 		{
-			f->setTarget(target);
+			// f->setTarget(target);
 			f->update(loc, mass);
 			ofVec3f forceVec = f->get();
 			forceVec /= mass;

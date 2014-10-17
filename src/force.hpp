@@ -6,8 +6,6 @@ namespace wezside
 	class Force
 	{
 	protected:
-		// Force vector components
-		float x, y, z;
 
 		// Any additional target to measure distance to
 		ofVec3f target;
@@ -48,17 +46,14 @@ namespace wezside
 		virtual ofVec3f get() {return acc3f;}
 		virtual void setTarget(ofVec2f t){target = t;}
 		virtual void setTarget(ofVec3f t){target = t;}
-		virtual void setPosition(float xpos, float ypos, float zpos)
-		{
-			x = xpos;
-			y = ypos;
-			z = zpos;
-		}
 		virtual void draw() 
 		{
 			ofSetColor(255.0f, 122.0f);
 			ofCircle(x, y, z, 10);
 		}
+		
+		// Force vector components
+		float x, y, z;
 	};
 }
 #endif // __FORCE_HPP__
